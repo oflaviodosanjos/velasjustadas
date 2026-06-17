@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Método Velas Ajustadas™ — Mentoria Estratégica para Fisioterapeutas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,700;1,800&family=Space+Grotesk:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cream:   #EDE7DA;
+      --cream2:  #E4DDD0;
+      --cream3:  #D9D1C2;
+      --white:   #FAF8F3;
+      --brown:   #1E1410;
+      --brown2:  #3A2818;
+      --brown3:  #604838;
+      --brown4:  #8C7260;
+      --gold:    #A8822A;
+      --gold-lt: #C9A042;
+      --gdim:    rgba(168,130,42,.12);
+      --t1:      #1E1410;
+      --t2:      #60503C;
+      --t3:      #9A8A78;
+      --max:     1120px;
+      --nav:     72px;
+      --r:       20px;
+      --rs:      12px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--cream);
+      color: var(--t1);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-size: 16px; line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    p { text-wrap: pretty; }
+    a { color: inherit; text-decoration: none; }
+
+    /* Layout */
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 40px; }
+    .sec  { padding: 100px 0; position: relative; overflow: hidden; }
+    .sec-white { background: var(--white); }
+    .sec-cream { background: var(--cream2); }
+    .sec-dark  { background: var(--brown); color: var(--white); }
+
+    /* ─── NAV ─── */
+    #nav {
+      position: fixed; top: 0; left: 0; right: 0; height: var(--nav); z-index: 200;
+      transition: background .3s, border-color .3s, backdrop-filter .3s;
+    }
+    #nav.solid {
+      background: rgba(237,231,218,.94);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(30,20,16,.10);
+    }
+    .nav-in {
+      max-width: var(--max); margin: 0 auto; padding: 0 40px; height: 100%;
+      display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    }
+    .logo {
+      font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 600;
+      display: flex; align-items: center; gap: 7px; white-space: nowrap; color: var(--brown);
+    }
+    .logo .ls { color: var(--gold); }
+    .nav-links {
+      display: flex; align-items: center; gap: 36px;
+      font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 500;
+      color: rgba(30,20,16,.60);
+    }
+    .nav-links a:hover { color: var(--brown); }
+    .nav-cta {
+      display: inline-flex; align-items: center;
+      background: var(--brown); color: var(--white);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      padding: 10px 22px; border-radius: 100px; white-space: nowrap;
+      transition: background .2s, transform .15s;
+    }
+    .nav-cta:hover { background: var(--brown2); transform: translateY(-1px); }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative; min-height: 100vh;
+      overflow: hidden; display: flex; flex-direction: column;
+    }
+    /* Atmospheric background */
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: linear-gradient(
+        180deg,
+        #B8BFCC 0%,
+        #BCAF98 18%,
+        #AE9E88 35%,
+        #9E9088 52%,
+        #8A7E74 66%,
+        #726860 78%,
+        #5E5048 90%,
+        #4A3E36 100%
+      );
+    }
+    .hero-bg-svgs { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+
+    /* Two-column body */
+    .hero-body {
+      position: relative; z-index: 2;
+      flex: 1; display: grid;
+      grid-template-columns: 50% 50%;
+      min-height: calc(100vh - 120px);
+      padding-top: var(--nav);
+    }
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 56px 20px 150px 40px;
+    }
+    .hero-right {
+      display: flex; align-items: center; justify-content: center;
+      padding: 80px 36px 150px 28px;
+    }
+
+    /* Headline */
+    .hero-eyebrow {
+      font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: rgba(30,20,16,.90); margin-bottom: 20px;
+      text-shadow: 0 1px 10px rgba(220,205,170,.60);
+    }
+    .hero-h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(46px, 5.8vw, 80px);
+      font-weight: 900; line-height: .93;
+      letter-spacing: -.02em; text-transform: uppercase;
+      color: var(--brown); margin-bottom: 28px;
+    }
+    .hero-h1 .reg {
+      font-size: .36em; vertical-align: super;
+      font-weight: 700; color: var(--gold); letter-spacing: 0;
+    }
+    .hero-tagline {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: 17px;
+      color: rgba(30,20,16,.92); margin-bottom: 42px; letter-spacing: .01em;
+      text-shadow: 0 1px 10px rgba(220,205,170,.60);
+    }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--gold-lt); color: var(--brown);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px; font-weight: 700; letter-spacing: .10em; text-transform: uppercase;
+      padding: 17px 38px; border-radius: 100px; border: none; cursor: pointer; width: fit-content;
+      transition: background .2s, transform .15s, box-shadow .2s;
+    }
+    .hero-cta:hover { background: #D9B85A; transform: translateY(-2px); box-shadow: 0 12px 36px rgba(168,130,42,.45); }
+
+    /* Floating white card */
+    .hero-card {
+      background: rgba(252,249,244,.97);
+      border-radius: 26px; width: 100%; max-width: 400px;
+      box-shadow:
+        0 0 0 1px rgba(60,40,24,.06),
+        0 28px 72px rgba(30,16,8,.24),
+        0 6px 20px rgba(30,16,8,.12);
+      overflow: hidden;
+      transform: translateY(10px);
+      position: relative;
+    }
+    .hc-top  { padding: 22px 22px 0; }
+    .hc-tags { display: flex; gap: 7px; margin-bottom: 18px; }
+    .hc-tag  {
+      display: inline-flex; align-items: center;
+      border: 1px solid rgba(30,20,16,.18); border-radius: 100px;
+      padding: 5px 14px;
+      font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 500; color: var(--brown2);
+    }
+    .hc-tag.on { background: var(--brown); color: white; border-color: var(--brown); }
+    .hc-hrow { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 0 22px 6px; }
+    .hc-h {
+      font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700;
+      color: var(--brown); line-height: 1.2; max-width: 200px;
+    }
+    .hc-badge {
+      background: var(--brown); color: white; flex-shrink: 0;
+      font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 700;
+      letter-spacing: .07em; text-transform: uppercase;
+      padding: 7px 12px; border-radius: 8px; white-space: nowrap;
+    }
+    .hc-sub { font-size: 13px; color: var(--t3); padding: 6px 22px 0; }
+    /* Compass visual */
+    .hc-vis {
+      height: 180px;
+      background: linear-gradient(135deg, #D6CEC0 0%, #C6BAA8 50%, #B4A894 100%);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden; margin-top: 14px;
+    }
+    .hc-vis-text {
+      position: absolute; bottom: 14px; left: 18px;
+      font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600;
+      letter-spacing: .10em; text-transform: uppercase; color: rgba(30,20,16,.45);
+    }
+    .hc-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid rgba(30,20,16,.08);
+    }
+    .hc-stat { padding: 14px 18px; border-right: 1px solid rgba(30,20,16,.08); }
+    .hc-stat:last-child { border-right: none; }
+    .hcs-n { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: var(--gold); line-height: 1; margin-bottom: 2px; }
+    .hcs-l { font-size: 10px; color: var(--t3); line-height: 1.3; text-transform: uppercase; letter-spacing: .05em; }
+
+    /* Bottom strip */
+    .hero-strip {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 3;
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      height: 124px;
+    }
+    .hs { padding: 20px 30px; display: flex; flex-direction: column; justify-content: flex-end; }
+    .hs-1 { background: var(--brown); }
+    .hs-1 h4 { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; color: white; margin-bottom: 5px; }
+    .hs-1 p  { font-size: 12px; color: rgba(255,255,255,.45); line-height: 1.4; }
+    .hs-2 {
+      background: rgba(232,224,208,.90); backdrop-filter: blur(14px);
+      border-left: 1px solid rgba(30,20,16,.12); border-right: 1px solid rgba(30,20,16,.12);
+      justify-content: center; gap: 4px;
+    }
+    .hs-t-row { display: flex; align-items: baseline; gap: 0; }
+    .hs-tn { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--brown); font-variant-numeric: tabular-nums; line-height: 1; }
+    .hs-tl { font-family: 'Space Grotesk', sans-serif; font-size: 9px; color: var(--t3); text-transform: uppercase; letter-spacing: .06em; margin-left: 3px; }
+    .hs-tsep { font-size: 18px; color: var(--brown4); padding: 0 1px 4px; }
+    .hs-2-sub { font-family: 'Space Grotesk', sans-serif; font-size: 10px; color: var(--t3); text-transform: uppercase; letter-spacing: .08em; }
+    .hs-3 { background: rgba(232,224,208,.90); backdrop-filter: blur(14px); justify-content: space-between; padding-top: 16px; }
+    .hs-3 h4 { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; line-height: 1.25; color: var(--brown); max-width: 200px; }
+    .hs-3 a  { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .10em; text-transform: uppercase; color: var(--brown); text-decoration: underline; text-underline-offset: 3px; opacity: .70; }
+    .hs-3 a:hover { opacity: 1; }
+
+    /* ─── SECTION HEADERS ─── */
+    .slbl  { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .sline { width: 38px; height: 2px; background: var(--gold); border-radius: 2px; margin-bottom: 18px; }
+    .stitle { font-family: 'Playfair Display', serif; font-size: clamp(28px, 3.5vw, 50px); font-weight: 700; line-height: 1.14; margin-bottom: 16px; color: var(--brown); }
+    .stitle em { font-style: italic; color: var(--gold); }
+    .stitle .dim { font-weight: 400; color: var(--t2); }
+    .ssub  { font-size: 17px; color: var(--t2); max-width: 560px; margin-bottom: 52px; line-height: 1.65; }
+
+    /* ─── PROBLEMA ─── */
+    .pain-cols { display: grid; grid-template-columns: 300px 1fr; gap: 60px; align-items: start; }
+    .pain-img-wrap { position: sticky; top: calc(var(--nav) + 24px); border-radius: var(--r); overflow: hidden; box-shadow: 0 18px 52px rgba(30,20,16,.18); }
+    .pain-img { width: 100%; aspect-ratio: 3/4; display: block; }
+    .pain-right-col .slbl { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .15em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .pain-right-col .stitle { font-size: clamp(34px, 4vw, 52px); margin-bottom: 28px; }
+    .pain-right-col .stitle em { display: block; }
+    .pain-right-col p { font-size: 17px; color: var(--t2); margin-bottom: 20px; line-height: 1.82; }
+    .callout { margin-top: 40px; padding: 24px 28px; border-left: 3px solid var(--gold); background: var(--white); border-radius: 0 var(--rs) var(--rs) 0; }
+    .callout p { color: var(--brown); font-size: 17px; font-weight: 500; margin: 0; line-height: 1.65; }
+
+    /* ─── SOLUTION ─── */
+    .sol-g { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .sol-c {
+      padding: 30px; background: var(--white); border-radius: var(--r);
+      border: 1px solid rgba(30,20,16,.08);
+      transition: box-shadow .22s, transform .22s;
+    }
+    .sol-c:hover { box-shadow: 0 12px 40px rgba(30,20,16,.10); transform: translateY(-3px); }
+    .ci { width: 46px; height: 46px; background: var(--gdim); border-radius: 11px; display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 18px; }
+    .sol-c h3 { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 9px; color: var(--brown); }
+    .sol-c p  { font-size: 14px; color: var(--t2); line-height: 1.64; }
+    .sol-note { margin-top: 22px; padding: 26px 30px; background: var(--gdim); border: 1px solid rgba(168,130,42,.20); border-radius: var(--r); font-size: 16px; color: var(--t2); line-height: 1.8; }
+    .sol-note strong { color: var(--brown); }
+
+    /* ─── PHASES ─── */
+    .ph-g { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .ph { padding: 28px; background: var(--white); border-radius: var(--r); border: 1px solid rgba(30,20,16,.08); position: relative; overflow: hidden; transition: box-shadow .22s; }
+    .ph:hover { box-shadow: 0 8px 30px rgba(30,20,16,.10); }
+    .ph-n { font-family: 'Playfair Display', serif; font-size: 96px; font-weight: 900; color: rgba(168,130,42,.09); position: absolute; top: 4px; right: 14px; line-height: 1; pointer-events: none; user-select: none; }
+    .ptag { font-family: 'Space Grotesk', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .ph h3 { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; margin-bottom: 9px; color: var(--brown); }
+    .ph p  { font-size: 14px; color: var(--t2); line-height: 1.64; }
+    .fmt-bar {
+      margin-top: 28px; padding: 22px 30px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+      background: var(--gdim); border: 1px solid rgba(168,130,42,.20); border-radius: var(--r);
+    }
+    .fmt { text-align: center; }
+    .fmt .n { font-family: 'Playfair Display', serif; font-size: 36px; font-weight: 700; color: var(--gold); line-height: 1; margin-bottom: 4px; }
+    .fmt .l { font-size: 11px; color: var(--t2); line-height: 1.4; }
+
+    /* ─── PROOF ─── */
+    .video-ph { max-width: 760px; margin: 32px auto 0; background: var(--brown2); border-radius: var(--r); overflow: hidden; aspect-ratio: 16/9; display: flex; align-items: center; justify-content: center; position: relative; box-shadow: 0 20px 60px rgba(30,20,16,.22); cursor: pointer; }
+    .video-ph::before { content: ''; position: absolute; inset: 0; background: linear-gradient(160deg, rgba(100,78,52,.50) 0%, rgba(30,20,14,.80) 100%); }
+    .video-ph-btn { position: relative; z-index: 1; width: 76px; height: 76px; background: rgba(255,255,255,.12); border: 2px solid rgba(255,255,255,.28); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background .2s, transform .15s; }
+    .video-ph:hover .video-ph-btn { background: rgba(255,255,255,.20); transform: scale(1.06); }
+    .video-ph-label { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 1; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.40); white-space: nowrap; }
+
+    /* ─── OFFER ─── */
+    .offer-g { display: grid; grid-template-columns: 1fr 380px; gap: 52px; align-items: start; }
+    table.vt { width: 100%; border-collapse: collapse; }
+    table.vt th { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .10em; text-transform: uppercase; color: rgba(255,255,255,.38); padding: 10px 14px; text-align: left; border-bottom: 1px solid rgba(255,255,255,.09); }
+    table.vt td { padding: 12px 14px; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,.06); color: rgba(255,255,255,.78); }
+    table.vt td:last-child { text-align: right; color: var(--gold-lt); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; font-family: 'Space Grotesk', sans-serif; }
+    .anchor { margin-top: 28px; font-size: 15px; color: rgba(255,255,255,.55); line-height: 1.75; }
+    .anchor strong { color: rgba(255,255,255,.88); }
+    .pc { padding: 34px; background: var(--white); border-radius: var(--r); box-shadow: 0 20px 60px rgba(30,20,16,.22); position: sticky; top: calc(var(--nav) + 20px); }
+    .plbl { font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; }
+    .p-old { font-size: 14px; color: var(--t3); text-decoration: line-through; margin-bottom: 3px; }
+    .p-big { font-family: 'Playfair Display', serif; font-size: 58px; font-weight: 700; color: var(--brown); line-height: 1; margin-bottom: 5px; }
+    .p-big sub { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 600; vertical-align: super; }
+    .p-inst { font-size: 13px; color: var(--t2); margin-bottom: 20px; }
+    .pdiv { height: 1px; background: rgba(30,20,16,.10); margin: 18px 0; }
+    .t-head { font-family: 'Space Grotesk', sans-serif; font-size: 11px; color: var(--t3); text-transform: uppercase; letter-spacing: .08em; text-align: center; margin-bottom: 10px; }
+    .t-row { display: flex; align-items: center; justify-content: center; gap: 5px; margin-bottom: 20px; }
+    .tbl { background: var(--cream2); border: 1px solid rgba(168,130,42,.25); border-radius: 8px; padding: 8px 10px; text-align: center; min-width: 54px; }
+    .tbl .tn { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: var(--gold); line-height: 1; display: block; font-variant-numeric: tabular-nums; }
+    .tbl .tl { font-size: 9px; letter-spacing: .10em; text-transform: uppercase; color: var(--t3); display: block; margin-top: 2px; }
+    .tsep { font-size: 20px; color: var(--t3); padding-bottom: 8px; }
+    .btn-dark { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--brown); color: var(--white); font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 15px; border-radius: 100px; border: none; cursor: pointer; transition: background .2s, transform .15s; }
+    .btn-dark:hover { background: var(--brown2); transform: translateY(-1px); }
+    .p-sec { margin-top: 12px; text-align: center; font-size: 12px; color: var(--t3); }
+
+    /* ─── FAQ ─── */
+    .faq-w { max-width: 760px; }
+    .faq-item { border-bottom: 1px solid rgba(30,20,16,.13); }
+    .faq-q { width: 100%; background: none; border: none; color: var(--brown); text-align: left; padding: 20px 0; font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 16px; transition: color .2s; }
+    .faq-q:hover { color: var(--gold); }
+    .faq-ic { color: var(--gold); font-size: 22px; flex-shrink: 0; transition: transform .3s; line-height: 1; }
+    .faq-item.open .faq-ic { transform: rotate(45deg); }
+    .faq-a { max-height: 0; overflow: hidden; font-size: 15px; color: var(--t2); line-height: 1.75; transition: max-height .35s ease, padding-bottom .35s ease; }
+    .faq-a.open { max-height: 300px; padding-bottom: 22px; }
+
+    /* ─── FINAL CTA ─── */
+    .final { text-align: center; }
+    .final .stitle { max-width: 640px; margin: 0 auto 16px; }
+    .final-body { font-size: 17px; color: rgba(255,255,255,.58); max-width: 540px; margin: 0 auto 44px; line-height: 1.8; }
+    .final-body em { font-style: italic; color: rgba(255,255,255,.90); }
+    .f-block { display: inline-block; padding: 28px 52px; margin-bottom: 28px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.13); border-radius: var(--r); }
+    .f-old { font-size: 14px; color: rgba(255,255,255,.32); text-decoration: line-through; margin-bottom: 4px; }
+    .f-new { font-family: 'Playfair Display', serif; font-size: 70px; font-weight: 700; color: white; line-height: 1; }
+    .f-new sup { font-family: 'Space Grotesk', sans-serif; font-size: 22px; vertical-align: super; }
+    .f-inst { font-size: 14px; color: rgba(255,255,255,.45); margin-top: 5px; }
+    .btn-gold { display: inline-flex; align-items: center; gap: 9px; background: var(--gold); color: var(--brown); font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 17px 42px; border-radius: 100px; border: none; cursor: pointer; transition: background .2s, transform .15s, box-shadow .2s; }
+    .btn-gold:hover { background: var(--gold-lt); transform: translateY(-2px); box-shadow: 0 14px 42px rgba(168,130,42,.38); }
+    .f-urg { margin-top: 16px; font-size: 14px; color: rgba(255,255,255,.45); }
+    .ct { color: var(--gold-lt); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+    /* ─── FOOTER ─── */
+    footer { background: var(--brown); border-top: 1px solid rgba(255,255,255,.06); padding: 40px 0; text-align: center; }
+    footer p { font-size: 13px; color: rgba(255,255,255,.38); margin-bottom: 8px; }
+    .bdgs { display: flex; align-items: center; justify-content: center; gap: 28px; flex-wrap: wrap; margin-top: 18px; }
+    .bdg  { font-size: 12px; color: rgba(255,255,255,.28); }
+
+    /* ─── ANIMATIONS ─── */
+    .fi { opacity: 0; transform: translateY(20px); transition: opacity .65s ease, transform .65s ease; }
+    .fi.vis { opacity: 1; transform: none; }
+    .fi.d1 { transition-delay: .10s; }
+    .fi.d2 { transition-delay: .20s; }
+    .fi.d3 { transition-delay: .30s; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1000px) {
+      .pain-cols { grid-template-columns: 1fr; gap: 40px; }
+      .pain-img-wrap { position: static; max-width: 340px; }
+      .offer-g   { grid-template-columns: 1fr; }
+      .pc        { position: static; }
+    }
+    @media (max-width: 860px) {
+      .hero-body { grid-template-columns: 1fr; }
+      .hero-right { padding: 0 40px 160px; }
+      .hero-left  { padding-bottom: 30px; }
+      .hero-strip { grid-template-columns: 1fr 1fr; height: auto; position: relative; }
+      .hs-1 { grid-column: 1 / -1; }
+    }
+    @media (max-width: 720px) {
+      .sol-g  { grid-template-columns: 1fr; }
+      .ph-g   { grid-template-columns: 1fr; }
+      .proof-g{ grid-template-columns: 1fr; }
+      .fmt-bar{ grid-template-columns: 1fr 1fr; }
+      .sec    { padding: 70px 0; }
+      .wrap   { padding: 0 24px; }
+      .f-block{ padding: 22px 26px; }
+      .f-new  { font-size: 52px; }
+    }
+    @media (max-width: 480px) {
+      .hero-h1  { font-size: 56px; }
+      .nav-links { display: none; }
+      .hero-left { padding: 40px 24px 120px; }
+      .hero-right{ padding: 0 24px 140px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ NAV ══════════ -->
+<nav id="nav">
+  <div class="nav-in">
+    <div class="logo"><span class="ls">✦</span> Velas Ajustadas™</div>
+    <nav class="nav-links">
+      <a href="#problema">O Problema</a>
+      <a href="#como-funciona">Programa</a>
+      <a href="#oferta">Investimento</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a href="#oferta" class="nav-cta">Garantir Vaga</a>
+  </div>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<section class="hero" id="inicio">
+
+  <!-- Layered atmosphere -->
+  <div class="hero-bg"></div>
+  <div class="hero-bg-svgs">
+    <!-- Mountain silhouette layer 1 (far) -->
+    <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="position:absolute;bottom:120px;left:0;width:100%;height:48%" viewBox="0 0 1440 320" fill="none">
+      <path d="M0,280 C120,240 200,160 320,130 C400,110 440,170 520,150 C600,130 640,60 720,40 C800,20 850,90 920,110 C990,130 1030,80 1100,100 C1170,120 1220,160 1280,150 C1340,140 1380,200 1440,220 L1440,320 L0,320 Z" fill="rgba(90,76,64,0.55)"/>
+    </svg>
+    <!-- Mountain silhouette layer 2 (mid) -->
+    <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="position:absolute;bottom:120px;left:0;width:100%;height:36%" viewBox="0 0 1440 240" fill="none">
+      <path d="M0,200 C80,180 160,160 260,150 C360,140 420,190 520,180 C620,170 680,120 780,130 C860,138 900,175 980,170 C1060,165 1120,140 1200,150 C1300,162 1380,190 1440,200 L1440,240 L0,240 Z" fill="rgba(72,60,50,0.65)"/>
+    </svg>
+    <!-- Water shimmer -->
+    <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="position:absolute;bottom:120px;left:0;width:100%;height:16%" viewBox="0 0 1440 100" fill="none">
+      <path d="M0,40 C180,28 360,52 540,40 C720,28 900,52 1080,40 C1260,28 1380,44 1440,40 L1440,100 L0,100 Z" fill="rgba(58,48,40,0.70)"/>
+      <path d="M0,60 C200,48 400,70 600,58 C800,46 1000,70 1200,60 C1300,54 1380,62 1440,60 L1440,100 L0,100 Z" fill="rgba(50,40,32,0.60)"/>
+    </svg>
+    <!-- Horizon glow -->
+    <div style="position:absolute;top:38%;left:50%;transform:translateX(-50%);width:700px;height:200px;background:radial-gradient(ellipse,rgba(200,165,90,0.32) 0%,transparent 70%);pointer-events:none;"></div>
+  </div>
+
+  <!-- Two columns -->
+  <div class="hero-body">
+    <div class="hero-left">
+      <div class="hero-eyebrow fi">MENTORIA ESTRATÉGICA INDIVIDUAL · EMPREENDEDORES</div>
+      <h1 class="hero-h1 fi d1">
+        MÉTODO<br>
+        VELAS<br>
+        AJUSTADAS<span class="reg">™</span>
+      </h1>
+      <p class="hero-tagline fi d2">/ Para empreendedores que querem crescer com estratégia /</p>
+      <a href="#oferta" class="hero-cta fi d3">Começar agora</a>
+    </div>
+    <div class="hero-right">
+      <div class="hero-card fi d2">
+        <div class="hc-top">
+          <div class="hc-tags">
+            <span class="hc-tag on">Diagnóstico</span>
+            <span class="hc-tag">Estratégia</span>
+            <span class="hc-tag">90 dias</span>
+          </div>
+        </div>
+        <div class="hc-hrow">
+          <div class="hc-h">Mentoria individual &amp; crescimento previsível</div>
+          <div class="hc-badge">PROGRAMA</div>
+        </div>
+        <div class="hc-sub">Para empreendedores. Individual. Ao vivo.</div>
+        <!-- Compass visual -->
+        <div class="hc-vis">
+          <svg viewBox="0 0 160 160" width="140" height="140" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="80" cy="80" r="72" stroke="rgba(168,130,42,0.22)" stroke-width="1"/>
+            <circle cx="80" cy="80" r="56" stroke="rgba(168,130,42,0.16)" stroke-width="1"/>
+            <circle cx="80" cy="80" r="36" stroke="rgba(168,130,42,0.12)" stroke-width="1"/>
+            <!-- N pointer -->
+            <path d="M80 14 L86 72 L80 80 L74 72 Z" fill="rgba(168,130,42,0.85)"/>
+            <!-- S pointer -->
+            <path d="M80 146 L74 88 L80 80 L86 88 Z" fill="rgba(168,130,42,0.28)"/>
+            <!-- E pointer -->
+            <path d="M146 80 L88 74 L80 80 L88 86 Z" fill="rgba(168,130,42,0.28)"/>
+            <!-- W pointer -->
+            <path d="M14 80 L72 86 L80 80 L72 74 Z" fill="rgba(168,130,42,0.28)"/>
+            <circle cx="80" cy="80" r="5" fill="rgba(168,130,42,0.90)"/>
+            <circle cx="80" cy="80" r="2" fill="white"/>
+            <!-- Cardinal letters -->
+            <text x="80" y="10" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="9" font-weight="700" fill="rgba(168,130,42,0.75)" letter-spacing="1">N</text>
+            <text x="80" y="157" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="9" font-weight="700" fill="rgba(168,130,42,0.50)">S</text>
+            <text x="153" y="83" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="9" font-weight="700" fill="rgba(168,130,42,0.50)">L</text>
+            <text x="7" y="83" text-anchor="middle" font-family="Space Grotesk,sans-serif" font-size="9" font-weight="700" fill="rgba(168,130,42,0.50)">O</text>
+          </svg>
+          <div class="hc-vis-text">Bússola estratégica</div>
+        </div>
+        <div class="hc-stats">
+          <div class="hc-stat"><div class="hcs-n">8</div><div class="hcs-l">Sessões ao vivo</div></div>
+          <div class="hc-stat"><div class="hcs-n">6</div><div class="hcs-l">Fases</div></div>
+          <div class="hc-stat"><div class="hcs-n">90</div><div class="hcs-l">Dias de plano</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom strip -->
+  <div class="hero-strip">
+    <div class="hs hs-1">
+      <h4>Crescimento mensurável</h4>
+      <p>Dashboard de indicadores incluído no programa.</p>
+    </div>
+    <div class="hs hs-2">
+      <div class="hs-2-sub">⚠️ Condição expira em</div>
+      <div class="hs-t-row">
+        <span class="hs-tn" id="th2">00</span><span class="hs-tl">h</span>
+        <span class="hs-tsep">:</span>
+        <span class="hs-tn" id="tm2">00</span><span class="hs-tl">m</span>
+        <span class="hs-tsep">:</span>
+        <span class="hs-tn" id="ts2">00</span><span class="hs-tl">s</span>
+      </div>
+    </div>
+    <div class="hs hs-3">
+      <h4>Um único mês de resultado paga o programa inteiro</h4>
+      <a href="#oferta">Garantir vaga →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PROBLEMA ══════════ -->
+<section class="sec sec-cream" id="problema">
+  <div class="wrap">
+    <div class="pain-cols">
+
+      <!-- Ilustração: pessoa ajustando velas -->
+      <div class="pain-img-wrap fi">
+        <svg class="pain-img" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="psky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#C2B8A4"/>
+              <stop offset="55%" stop-color="#A8927A"/>
+              <stop offset="100%" stop-color="#5E4838"/>
+            </linearGradient>
+            <linearGradient id="pwater" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#6A5440"/>
+              <stop offset="100%" stop-color="#3A2A1C"/>
+            </linearGradient>
+            <linearGradient id="psail" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="rgba(244,234,214,0.94)"/>
+              <stop offset="100%" stop-color="rgba(205,182,148,0.88)"/>
+            </linearGradient>
+          </defs>
+          <!-- Sky -->
+          <rect width="300" height="400" fill="url(#psky)"/>
+          <!-- Horizon glow -->
+          <ellipse cx="150" cy="248" rx="180" ry="56" fill="rgba(210,170,90,0.24)"/>
+          <!-- Water -->
+          <rect x="0" y="295" width="300" height="105" fill="url(#pwater)"/>
+          <!-- Water reflections -->
+          <path d="M0,305 C40,300 80,310 120,305 C160,300 200,308 240,305 C270,302 290,307 300,305" stroke="rgba(255,255,255,0.09)" stroke-width="1" fill="none"/>
+          <path d="M20,318 C60,313 110,322 160,317 C210,312 260,320 300,317" stroke="rgba(255,255,255,0.06)" stroke-width="1" fill="none"/>
+          <!-- Boat hull -->
+          <path d="M72,292 Q150,306 228,292 L218,304 Q150,318 82,304 Z" fill="#2E1E10"/>
+          <path d="M82,304 Q150,318 218,304 L214,310 Q150,324 86,310 Z" fill="#201408"/>
+          <!-- Mast -->
+          <rect x="148" y="108" width="4" height="186" rx="2" fill="#2A1A0C"/>
+          <!-- Main sail -->
+          <path d="M152,118 C175,130 218,158 232,200 C244,238 236,272 224,290 L152,290 Z" fill="url(#psail)"/>
+          <path d="M152,118 C175,130 218,158 232,200 C244,238 236,272 224,290" stroke="rgba(150,120,70,0.28)" stroke-width="1" fill="none"/>
+          <!-- Jib sail -->
+          <path d="M152,138 C132,155 105,188 100,238 L152,238 Z" fill="rgba(238,222,196,0.78)"/>
+          <!-- Boom -->
+          <line x1="152" y1="290" x2="230" y2="290" stroke="#2A1A0C" stroke-width="3"/>
+          <!-- Person - reaching up to adjust sail -->
+          <!-- Legs -->
+          <rect x="143" y="264" width="9" height="26" rx="3" fill="#4A3020"/>
+          <rect x="155" y="264" width="9" height="26" rx="3" fill="#4A3020"/>
+          <!-- Torso -->
+          <path d="M140,242 Q150,236 162,242 L164,264 L138,264 Z" fill="#5C3C28" rx="4"/>
+          <!-- Left arm stretching upward to rope -->
+          <path d="M142,248 Q130,228 132,206 Q133,194 136,180" stroke="#5C3C28" stroke-width="8" stroke-linecap="round" fill="none"/>
+          <!-- Right arm -->
+          <path d="M160,248 Q170,240 168,228" stroke="#5C3C28" stroke-width="7" stroke-linecap="round" fill="none"/>
+          <!-- Head -->
+          <circle cx="151" cy="232" r="10" fill="#6E4A38"/>
+          <!-- Hair -->
+          <path d="M141,228 Q145,220 155,221 Q162,224 161,230" fill="#3A2418"/>
+          <!-- Rope from hand to sail -->
+          <path d="M136,180 Q143,155 150,140" stroke="rgba(80,58,30,0.55)" stroke-width="1.5" stroke-dasharray="4,3" fill="none"/>
+          <!-- Small wave splash under boat -->
+          <path d="M82,310 Q96,306 110,310 Q124,314 138,310" stroke="rgba(255,255,255,0.14)" stroke-width="1.5" fill="none"/>
+          <!-- Label bar -->
+          <rect x="0" y="360" width="300" height="40" fill="rgba(20,12,6,0.55)"/>
+          <text x="16" y="377" font-family="Space Grotesk, sans-serif" font-size="8" font-weight="600" letter-spacing="1.8" fill="rgba(210,182,120,0.82)">AJUSTANDO AS VELAS</text>
+          <text x="16" y="392" font-family="Space Grotesk, sans-serif" font-size="10" fill="rgba(255,255,255,0.38)">Estratégia em movimento</text>
+        </svg>
+      </div>
+
+      <!-- Texto -->
+      <div class="pain-right-col">
+        <div class="slbl fi">A realidade</div>
+        <div class="sline fi"></div>
+        <h2 class="stitle fi">Isso te soa<br><em>familiar?</em></h2>
+        <div class="fi d1">
+          <p>Você não falta esforço. Nunca faltou.</p>
+          <p>Você investiu anos em formação. Fez especializações. Leu, estudou, se atualizou. Atende com cuidado e seus pacientes reconhecem isso.</p>
+          <p>Mas tem uma sensação que não vai embora: a agenda cheia numa semana e assustadoramente vazia na outra. A dificuldade de explicar qual é exatamente o seu diferencial. A receita que oscila sem motivo aparente. A sensação de estar sempre trabalhando, mas nunca avançando.</p>
+          <p>Toda vez que você sai de um evento motivada... na segunda-feira a rotina engole tudo de volta. Igual antes.</p>
+          <div class="callout">
+            <p>O problema não é sua competência.<br><strong>O problema é que ninguém te ensinou a construir uma carreira com estratégia.</strong></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ SOLUÇÃO ══════════ -->
+<section class="sec sec-white" id="solucao">
+  <div class="wrap">
+    <div class="slbl fi">A solução</div>
+    <div class="sline fi"></div>
+    <h2 class="stitle fi" style="max-width:560px;">O Método Velas Ajustadas™</h2>
+    <p class="ssub fi">Um programa de mentoria estratégica individual para empreendedores  que querem transformar competência técnica em crescimento profissional previsível.</p>
+    <div class="sol-g">
+      <div class="sol-c fi"><div class="ci">🧭</div><h3>Diagnóstico Real</h3><p>Começamos entendendo exatamente onde você está  e onde está o maior potencial de crescimento. Nada genérico.</p></div>
+      <div class="sol-c fi d1"><div class="ci">🗺️</div><h3>Plano Personalizado</h3><p>Um plano de 90 dias construído para a sua realidade, não uma metodologia padrão que funciona para todo mundo.</p></div>
+      <div class="sol-c fi d2"><div class="ci">⚓</div><h3>Acompanhamento Individual</h3><p>8 sessões ao vivo com ajuste de rota em tempo real. Você não caminha sozinha em nenhuma etapa.</p></div>
+    </div>
+    <div class="sol-note fi">
+      O Método Velas Ajustadas™ <strong>não é um curso</strong>. Não é uma série de vídeos. É um programa estruturado com diagnóstico real, plano feito para você, e sessões ao vivo que garantem execução.<br><br>
+      Porque informação você já tem. <strong>O que muda resultados é implementação acompanhada.</strong>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ COMO FUNCIONA ══════════ -->
+<section class="sec sec-cream" id="como-funciona">
+  <div class="wrap">
+    <div class="slbl fi">O programa</div>
+    <div class="sline fi"></div>
+    <h2 class="stitle fi">Como funciona <span class="dim">o programa</span></h2>
+    <p class="ssub fi">6 fases. 8 sessões individuais ao vivo. Um plano construído para você.</p>
+    <div class="ph-g">
+      <div class="ph fi"><div class="ph-n">1</div><div class="ptag">Fase 1</div><h3>Diagnóstico e Clareza</h3><p>Assessment de Maturidade Profissional: avalia posicionamento, marketing, captação, finanças, organização e inteligência emocional. Um mapa completo de onde você está.</p></div>
+      <div class="ph fi d1"><div class="ph-n">2</div><div class="ptag">Fase 2</div><h3>Posicionamento Estratégico</h3><p>SWOT profissional e Canvas de Posicionamento. Você passa a saber exatamente qual é o seu diferencial, para quem serve melhor e como comunicar isso.</p></div>
+      <div class="ph fi"><div class="ph-n">3</div><div class="ptag">Fase 3</div><h3>Plano de 90 Dias</h3><p>Transformamos objetivos em ações concretas. Metas, prioridades, indicadores e cronograma — tudo adaptado à sua realidade.</p></div>
+      <div class="ph fi d1"><div class="ph-n">4</div><div class="ptag">Fase 4</div><h3>Marketing e Demanda</h3><p>As 5 alavancas (Posicionamento, Autoridade, Educação, Relacionamento e Consistência) para ser lembrada antes que a necessidade apareça.</p></div>
+      <div class="ph fi"><div class="ph-n">5</div><div class="ptag">Fase 5</div><h3>Gestão e Produtividade</h3><p>Dashboard de Indicadores: novos pacientes, retenção, ticket médio, indicações e receita mensal. O que não é medido não pode ser melhorado.</p></div>
+      <div class="ph fi d1"><div class="ph-n">6</div><div class="ptag">Fase 6</div><h3>Acompanhamento e Ajustes</h3><p>Sessões de revisão, correção de rota e eliminação de obstáculos em tempo real. Mais importante do que planejar é executar.</p></div>
+    </div>
+    <div class="fmt-bar fi">
+      <div class="fmt"><div class="n">8</div><div class="l">Sessões individuais ao vivo</div></div>
+      <div class="fmt"><div class="n">60'</div><div class="l">Por sessão via videochamada</div></div>
+      <div class="fmt"><div class="n">6</div><div class="l">Fases com materiais exclusivos</div></div>
+      <div class="fmt"><div class="n">1</div><div class="l">Relatório de Evolução Final</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PROVA SOCIAL ══════════ -->
+<section class="sec sec-white" id="depoimentos">
+  <div class="wrap">
+    <div class="slbl fi">Resultados</div>
+    <div class="sline fi"></div>
+    <h2 class="stitle fi">O que dizem <span class="dim">quem já passou pelo processo</span></h2>
+    <div class="video-ph fi">
+      <div class="video-ph-btn">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M6 4.5l13 7.5-13 7.5V4.5z" fill="rgba(255,255,255,.85)"/></svg>
+      </div>
+      <div class="video-ph-label">Depoimento em vídeo — em breve</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ OFERTA ══════════ -->
+<section class="sec sec-dark" id="oferta">
+  <div class="wrap">
+    <div class="slbl fi" style="color:var(--gold-lt);">Investimento</div>
+    <div class="sline fi"></div>
+    <h2 class="stitle fi" style="color:white;">Seu investimento <span style="font-weight:400;color:rgba(255,255,255,0.5);">no Método</span></h2>
+    <div class="offer-g">
+      <div class="fi">
+        <table class="vt">
+          <thead><tr><th>O que você recebe</th><th style="text-align:right;">Status</th></tr></thead>
+          <tbody>
+            <tr><td>Assessment de Maturidade Profissional</td><td>Exclusivo</td></tr>
+            <tr><td>Diagnóstico 360° Individual</td><td>Exclusivo</td></tr>
+            <tr><td>Relatório SWOT Profissional</td><td>Incluso</td></tr>
+            <tr><td>Canvas de Posicionamento</td><td>Incluso</td></tr>
+            <tr><td>Plano de Crescimento de 90 Dias</td><td>Incluso</td></tr>
+            <tr><td>Plano de Marketing de Demanda</td><td>Incluso</td></tr>
+            <tr><td>Dashboard de Indicadores</td><td>Incluso</td></tr>
+            <tr><td>8 Sessões Individuais ao Vivo (60 min)</td><td>Incluso</td></tr>
+            <tr><td>Sessões de Acompanhamento e Ajustes</td><td>Incluso</td></tr>
+            <tr><td>Relatório de Evolução Final</td><td>Incluso</td></tr>
+          </tbody>
+        </table>
+        <div class="anchor">
+          <p>Uma consulta particular no seu consultório custa entre <strong>R$ 150 e R$ 250</strong>. Um mês de agenda consistente representa <strong>R$ 3.000 a R$ 6.000</strong> em faturamento.</p><br>
+          <p><strong>Um único mês de resultado paga o programa inteiro.</strong></p>
+        </div>
+      </div>
+      <div class="fi d1">
+        <div class="pc">
+          <div class="plbl">✦ Condição especial de webinar</div>
+          <div class="p-old">De R$ 4.997</div>
+          <div class="p-big"><sub>R$</sub> 1.497</div>
+          <div class="p-inst">ou 12x no cartão com juros da operadora</div>
+          <div class="pdiv"></div>
+          <p class="t-head">⚠️ Esta condição expira em</p>
+          <div class="t-row">
+            <div class="tbl"><span class="tn" id="th">00</span><span class="tl">horas</span></div>
+            <span class="tsep">:</span>
+            <div class="tbl"><span class="tn" id="tm">00</span><span class="tl">min</span></div>
+            <span class="tsep">:</span>
+            <div class="tbl"><span class="tn" id="ts">00</span><span class="tl">seg</span></div>
+          </div>
+          <a href="#" class="btn-dark">🔒 Garantir minha vaga agora</a>
+          <div class="p-sec">🔐 Pagamento 100% seguro · Plataforma certificada</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ FAQ ══════════ -->
+<section class="sec sec-cream" id="faq">
+  <div class="wrap">
+    <div class="slbl fi">Dúvidas</div>
+    <div class="sline fi"></div>
+    <h2 class="stitle fi">Perguntas <span class="dim">frequentes</span></h2>
+    <div class="faq-w fi">
+      <div class="faq-item"><button class="faq-q">"Nunca fiz mentoria antes. Isso é para mim?" <span class="faq-ic">+</span></button><div class="faq-a">Sim, especialmente para você. O programa começa por um diagnóstico do seu momento atual, então não há pré-requisito. Se você é empreendedor e sente que seus resultados poderiam estar avançando mais, o Método foi construído para essa realidade.</div></div>
+      <div class="faq-item"><button class="faq-q">"As sessões são gravadas? Posso assistir depois?" <span class="faq-ic">+</span></button><div class="faq-a">As sessões são ao vivo e individuais — não são gravadas. Esse é um formato intencional: o que gera resultado é a troca em tempo real, o ajuste na hora e o compromisso da presença. Você agenda conforme sua disponibilidade.</div></div>
+      <div class="faq-item"><button class="faq-q">"Funciona para quem acabou de se formar e para quem já tem anos de carreira?" <span class="faq-ic">+</span></button><div class="faq-a">Sim para os dois perfis. Quem está começando usa o programa para construir posicionamento desde o início. Quem já tem experiência usa para destravar o que está limitando o próximo nível. O diagnóstico inicial define o ponto de partida de cada uma.</div></div>
+      <div class="faq-item"><button class="faq-q">"Preciso ter presença nas redes sociais para participar?" <span class="faq-ic">+</span></button><div class="faq-a">Não. O programa trabalha marketing de geração de demanda de forma abrangente — redes sociais são uma das ferramentas, não a única. O que você aprende se aplica ao canal que faz mais sentido para a sua realidade.</div></div>
+      <div class="faq-item"><button class="faq-q">"E se eu não conseguir aplicar durante o programa?" <span class="faq-ic">+</span></button><div class="faq-a">Esse é exatamente o papel das sessões de acompanhamento: identificar o que está travando a execução e corrigir na hora. Você não estará sozinha — cada sessão existe para garantir que o plano sai do papel.</div></div>
+      <div class="faq-item"><button class="faq-q">"Como funciona o parcelamento?" <span class="faq-ic">+</span></button><div class="faq-a">O investimento pode ser parcelado em até 12x no cartão de crédito, com os juros da operadora. O valor à vista é R$ 1.497 na condição especial de webinar.</div></div>
+      <div class="faq-item"><button class="faq-q">"Quando começam as sessões após a inscrição?" <span class="faq-ic">+</span></button><div class="faq-a">Após a confirmação do pagamento, entramos em contato para agendar a primeira sessão de acordo com a sua disponibilidade. O início é em até 7 dias úteis.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ CTA FINAL ══════════ -->
+<section class="sec sec-dark final" id="cta-final">
+  <div class="wrap" style="position:relative;z-index:1;">
+    <div class="slbl fi" style="color:var(--gold-lt);display:block;text-align:center;">É hora de assumir o leme</div>
+    <div class="sline fi" style="margin:12px auto 18px;"></div>
+    <h2 class="stitle fi" style="color:white;max-width:600px;margin:0 auto 16px;text-align:center;">2026 ainda pode ser o ano em que você <em>assumiu o leme.</em></h2>
+    <p class="final-body fi">Você chegou até aqui porque alguma coisa ressoou. Sair desse ponto exige mais do que motivação, exige diagnóstico, estratégia e execução acompanhada.
+
+O vento é o mesmo para todas. O que muda são as velas  e quem te ajuda a ajustá-las.</p>
+    <div class="f-block fi">
+      <div class="f-old">De R$ 4.997</div>
+      <div class="f-new"><sup>R$</sup> 1.497</div>
+      <div class="f-inst">ou 12x no cartão com juros da operadora</div>
+    </div>
+    <div style="display:flex;justify-content:center;margin-bottom:16px;" class="fi">
+      <a href="#" class="btn-gold">🔒 Quero entrar no Método Velas Ajustadas™</a>
+    </div>
+    <div class="f-urg fi">⏳ Condição especial expira em: <span class="ct">--:--:--</span></div>
+    <p style="margin-top:12px;font-size:13px;color:rgba(255,255,255,.28);text-align:center;" class="fi">Vagas limitadas · Mentoria individual · Ao vivo</p>
+  </div>
+</section>
+
+<!-- ══════════ FOOTER ══════════ -->
+<footer>
+  <div class="wrap">
+    <p>Dúvidas? Fale no WhatsApp: <a href="https://wa.me/55XXXXXXXXXX" style="color:var(--gold-lt);">[número]</a></p>
+    <div class="bdgs">
+      <div class="bdg">🔐 Pagamento 100% seguro</div>
+      <div class="bdg">✦ Plataforma certificada</div>
+      <div class="bdg">✦ Método Velas Ajustadas™</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── Countdown ──
+(function () {
+  var KEY = 'va_dl4';
+  var dl = localStorage.getItem(KEY);
+  if (!dl) { dl = Date.now() + 86400000; localStorage.setItem(KEY, String(dl)); }
+  dl = parseInt(dl, 10);
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function tick() {
+    var rem = Math.max(0, dl - Date.now());
+    var h = Math.floor(rem / 3600000), m = Math.floor((rem % 3600000) / 60000), s = Math.floor((rem % 60000) / 1000);
+    var str = pad(h) + ':' + pad(m) + ':' + pad(s);
+    document.querySelectorAll('.ct').forEach(function (el) { el.textContent = str; });
+    ['th','tm','ts'].forEach(function(id,i){
+      var el = document.getElementById(id); if(el) el.textContent = pad([h,m,s][i]);
+    });
+    ['th2','tm2','ts2'].forEach(function(id,i){
+      var el = document.getElementById(id); if(el) el.textContent = pad([h,m,s][i]);
+    });
+    if (rem > 0) setTimeout(tick, 1000);
+  }
+  tick();
+}());
+
+// ── Scroll Fade ──
+(function () {
+  var ob = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) { if (e.isIntersecting) e.target.classList.add('vis'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fi').forEach(function (el) { ob.observe(el); });
+}());
+
+// ── Nav solid on scroll ──
+(function () {
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function () {
+    nav.classList.toggle('solid', window.scrollY > 60);
+  }, { passive: true });
+}());
+
+// ── FAQ ──
+(function () {
+  document.querySelectorAll('.faq-q').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var item = btn.closest('.faq-item'), isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item').forEach(function (i) {
+        i.classList.remove('open'); i.querySelector('.faq-a').classList.remove('open');
+      });
+      if (!isOpen) { item.classList.add('open'); item.querySelector('.faq-a').classList.add('open'); }
+    });
+  });
+}());
+</script>
+
+</body>
+</html>
